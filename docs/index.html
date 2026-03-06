@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent-Driven Teams at Scale</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Agent-Driven Teams at Scale</h1>
+      <p>How we built a reusable multi-agent workflow and applied it to existing codebases</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>Why multi-agent teams</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Consistency</h3>
+            <p>Standard workflow across repos: plan → build → review → test → log.</p>
+          </div>
+          <div class="card">
+            <h3>Quality</h3>
+            <p>Specialized roles reduce context overload and catch regressions early.</p>
+          </div>
+          <div class="card">
+            <h3>Continuity</h3>
+            <p>Memory bank keeps requirements, decisions, features, and tests durable.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Team model</h2>
+        <img class="diagram" src="./assets/team.svg" alt="Agent team model" />
+        <p>This is a <strong>virtual team of specialized agents</strong>. Each agent mirrors a familiar industry role so non‑technical stakeholders can reason about responsibilities.</p>
+        <div class="grid">
+          <div class="card">
+            <h3>Planner → Product/Program Lead</h3>
+            <p>Clarifies requirements, success criteria, constraints, and acceptance tests.</p>
+          </div>
+          <div class="card">
+            <h3>Builder → Software Engineer</h3>
+            <p>Implements changes, updates tests, and integrates with existing code.</p>
+          </div>
+          <div class="card">
+            <h3>Reviewer → Tech Lead / QA</h3>
+            <p>Validates correctness, risk, regressions, and test coverage.</p>
+          </div>
+          <div class="card">
+            <h3>Researcher → Analyst / UX Research</h3>
+            <p>Finds external constraints, docs, or precedent to guide decisions.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Coordinator → Eng Manager</h3>
+          <ul>
+            <li>Routes tasks to the right specialist.</li>
+            <li>Enforces approvals and tool policies.</li>
+            <li>Owns workflow logging and memory updates.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Standard workflow</h2>
+        <img class="diagram" src="./assets/workflow.svg" alt="Plan build review test log workflow" />
+      </section>
+
+      <section>
+        <h2>Safety and tooling</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Tool calling with approvals</h3>
+            <p>Read tools auto-approve; write/side-effect tools require explicit approval.</p>
+          </div>
+          <div class="card">
+            <h3>Traceability</h3>
+            <p>Every change is logged and reviewed before completion.</p>
+          </div>
+          <div class="card">
+            <h3>Reusable template</h3>
+            <p>Teams start from a standard agent-team scaffold and adapt per project.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Memory bank</h2>
+        <img class="diagram" src="./assets/memory.svg" alt="Memory bank file layout" />
+        <p>We store context in files such as <code>features.md</code> and <code>testBacklog.md</code>, keeping requirements and tests aligned as work scales.</p>
+        <div class="grid">
+          <div class="card">
+            <h3>What it enables</h3>
+            <ul>
+              <li>Fast onboarding for new contributors.</li>
+              <li>Continuity across sessions and teams.</li>
+              <li>Audit trails for decisions and changes.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Typical use cases</h3>
+            <ul>
+              <li>Requirements snapshots per feature.</li>
+              <li>Feature inventory + roadmap signal.</li>
+              <li>Test coverage backlog for QA.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Apply to existing codebases</h2>
+        <img class="diagram" src="./assets/adoption.svg" alt="Adoption path" />
+        <ul>
+          <li>Drop in the agent-team scaffold and memory bank.</li>
+          <li>Run an initial <em>codebase inventory</em> (tree scan + key files).</li>
+          <li>Summarize architecture in <code>systemPatterns.md</code>.</li>
+          <li>Then run the standard workflow for each feature.</li>
+          <li>Persist requirements, features, and test backlog automatically.</li>
+        </ul>
+        <p><strong>Why inventory first:</strong> agents need a map of the codebase (entry points, core modules, tests) to make safe, scoped changes.</p>
+        <img class="diagram" src="./assets/inventory.svg" alt="Codebase inventory steps" />
+      </section>
+
+      <section>
+        <h2>Setup using the agent-team template</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Start from the template</h3>
+            <p>Clone the template repo and use it as a baseline for new projects.</p>
+            <p><code>git clone git@github.com:premald/agent-team-template.git</code></p>
+          </div>
+          <div class="card">
+            <h3>Apply to an existing repo</h3>
+            <p>Use the initializer to drop in the agent team and memory bank.</p>
+            <p><code>./scripts/init-agent-team.sh /path/to/your-repo</code></p>
+          </div>
+          <div class="card">
+            <h3>Run the workflow</h3>
+            <p>Use the full workflow for consistent plan → build → review → test.</p>
+            <p><code>npm run run:workflow -- \"your task\"</code></p>
+          </div>
+        </div>
+        <p>Set <code>AGENT_TEAM_REPO_ROOT</code> to the target repo so tools read/write the right files.</p>
+      </section>
+
+      <section>
+        <h2>Case study: Snake game</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Features added</h3>
+            <ul>
+              <li>Player name prompt (session)</li>
+              <li>High score tracking</li>
+              <li>Mobile swipe controls</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Operational gains</h3>
+            <ul>
+              <li>Standard plan → build → review → test</li>
+              <li>Memory bank updates on every run</li>
+              <li>Test backlog grows with features</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Scaling principles</h2>
+        <ul>
+          <li>Define risk tiers and approval rules.</li>
+          <li>Keep feature + test backlog in sync.</li>
+          <li>Human QA sign‑off for critical paths; agents flag gaps.</li>
+          <li>Use logs to support audits and onboarding.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://platform.openai.com/docs/guides/agents-sdk/">OpenAI Agents SDK</a></li>
+          <li><a href="https://platform.openai.com/docs/guides/agent-builder">Agent Builder</a></li>
+          <li><a href="https://platform.openai.com/docs/codex">OpenAI Codex</a></li>
+          <li><a href="https://docs.cline.bot/features/memory-bank">Cline Memory Bank</a></li>
+          <li><a href="https://docs.github.com/en/pages">GitHub Pages</a></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>Prepared for staff meeting. Last updated: 2026-03-06.</p>
+    </footer>
+  </body>
+</html>
